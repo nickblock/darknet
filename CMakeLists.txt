@@ -2,15 +2,21 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-if(${ANDROID_ABI} STREQUAL "armeabi-v7a")
-    include_directories(${ANDROID_SYSROOT}/usr/include/arm-linux-androideabi)
-elseif(${ANDROID_ABI} STREQUAL "arm64-v8a")
-    include_directories(${ANDROID_SYSROOT}/usr/include/aarch64-linux-android)
-else()
-    include_directories(${ANDROID_SYSROOT}/usr/include/arm-linux-androideabi)
+if($ANDROID_ABI)
+  if(${ANDROID_ABI} STREQUAL "armeabi-v7a")
+      include_directories(${ANDROID_SYSROOT}/usr/include/arm-linux-androideabi)
+  elseif(${ANDROID_ABI} STREQUAL "arm64-v8a")
+      include_directories(${ANDROID_SYSROOT}/usr/include/aarch64-linux-android)
+  else()
+      include_directories(${ANDROID_SYSROOT}/usr/include/arm-linux-androideabi)
+  endif()
+  set(CMAKE_C_FLAGS "-include ${CINDER_DIR}/include/cinder/app/android/android_fopen.h")
 endif()
 
-set(CMAKE_C_FLAGS "-include ${CINDER_DIR}/include/cinder/app/android/android_fopen.h")
+if( "" STREQUAL "${CMAKE_BUILD_TYPE}" )
+    set( CMAKE_BUILD_TYPE "Debug" CACHE FILEPATH "" FORCE )
+endif()
+
 
 add_library(darknet 
   src/gemm.c
