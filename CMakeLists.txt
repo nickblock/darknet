@@ -17,6 +17,9 @@ endif()
 if( "" STREQUAL "${CMAKE_BUILD_TYPE}" )
     set( CMAKE_BUILD_TYPE "Debug" CACHE FILEPATH "" FORCE )
 endif()
+if( "Debug" STREQUAL "${CMAKE_BUILD_TYPE}" )
+    set( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g" )
+endif()
 
 
 add_library(darknet 
